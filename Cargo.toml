@@ -9,7 +9,9 @@ version = "0.1.0"
 cortex-m = { version = "0.7.6", features = ["critical-section-single-core"] }
 cortex-m-rt = "0.7"
 cortex-m-semihosting = "0.5"
-panic-halt = "1.0.0"
+# panic-halt = "1.0.0"
+panic-semihosting = { version = "0.6.0", features = ["exit"] }
+stm32f3xx-hal = { version = "0.10.0", features = ["ld", "rt", "stm32f303xc"] }
 
 # Uncomment for the panic example.
 # panic-itm = "0.4.1"
