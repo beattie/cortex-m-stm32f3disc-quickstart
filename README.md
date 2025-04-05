@@ -79,3 +79,15 @@ to intervene to uphold that code of conduct.
 
 [CoC]: https://www.rust-lang.org/policies/code-of-conduct
 [team]: https://github.com/rust-embedded/wg#the-cortex-m-team
+
+## Notes
+running with **runner = "gdb-multiarch -q -x openocd.gdb"**
+
+_cargo run_ leds work and expected  and pressing the User button will stop
+and start the led action. Killing openocd the leds continue to rotate but
+the User button will stop the rotation but the led remains lit and  a
+second press does not restart the leds. Without openocd running the semihosting message is not available.
+
+_cargo run --release_ While semihosting messages indicate the User button
+presses are detected but the leds to not indicate that.
+
