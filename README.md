@@ -6,7 +6,7 @@ This project was started from the cortex-m-quickstart project from [Cortex-M tea
 
 The examples that have been added or updated and the examples that have been tested:
 * hello (see notes for open issues)
-* serial
+* serial (actually builds with current crate versions unlike every example google could find, that does not come with the HAL)
 
 ## Dependencies
 
