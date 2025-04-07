@@ -4,6 +4,10 @@
 
 This project was started from the cortex-m-quickstart project from [Cortex-M team][team].
 
+The examples that have been added or updated and the examples that have been tested:
+* hello (see notes for open issues)
+* serial
+
 ## Dependencies
 
 To build embedded programs using this template you'll need:
