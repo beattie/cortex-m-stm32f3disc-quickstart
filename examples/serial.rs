@@ -3,8 +3,8 @@
 use panic_semihosting as _; // logs messages to the host stderr; requires a debugger
 
 use cortex_m_rt::entry;
-// use panic_halt as _;
-use stm32f3xx_hal::{pac, prelude::*, serial};
+use panic_halt as _;
+// use stm32f3xx_hal::{pac, prelude::*, serial};
 
 #[entry]
 fn main() -> ! {
