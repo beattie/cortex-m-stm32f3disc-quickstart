@@ -6,12 +6,13 @@
 // use panic_halt as _; // you can put a breakpoint on `rust_begin_unwind` to catch panics
 // use panic_abort as _; // requires nightly
 // use panic_itm as _; // logs messages over ITM; requires ITM support
-use panic_semihosting as _; // logs messages to the host stderr; requires a debugger
+use panic_rtt_target as _; // logs messages to the host stderr; requires a debugger
 
 use core::cell::RefCell;
 
 use cortex_m_rt::entry;
-use cortex_m_semihosting::hprintln;
+use panic_rtt_target as _;
+use rtt_target::{rtt_init_print, rprintln};
 use critical_section::Mutex;
  
 use stm32f3xx_hal::{
@@ -31,7 +32,8 @@ static BUTTON: Mutex<RefCell<Option<ButtonPin>>> = Mutex::new(RefCell::new(None)
 
 #[entry]
 fn main() -> ! {
-    hprintln!("Hello from stm32f3discovery quickstart");
+    rtt_init_print!();
+    rprintln!("Hello from stm32f3discovery quickstart");
     let dp = Peripherals::take().unwrap();
     let cp = cortex_m::peripheral::Peripherals::take().unwrap();
 
@@ -98,7 +100,7 @@ fn main() -> ! {
 
 #[interrupt]
 fn EXTI0() {
-    hprintln!("User Button");
+    rprintln!("User Button");
     critical_section::with(|cs| {
         // Clear the interrupt pending bit so we don't infinitely call this routine
         BUTTON

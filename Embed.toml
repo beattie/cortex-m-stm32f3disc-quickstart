@@ -1,0 +1,19 @@
+[default.probe]
+protocol = "Swd"
+
+[default.general]
+# chip = "nrf52833_xxAA" # micro:bit V2
+chip = "STM32F303VCT6" # stm32F3-discovery (maybe)
+
+[default.rtt]
+enabled = true
+
+[default.reset]
+enabled = true
+# halt to allow gdb to get control
+# The following does not seem to have any effect
+halt_afterwards = true
+
+[default.gdb]
+enabled = true
+gdb_connection_string = "127.0.0.1:3333"
