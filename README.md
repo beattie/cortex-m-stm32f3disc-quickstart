@@ -4,6 +4,10 @@
 
 This project was started from the cortex-m-quickstart project from [Cortex-M team][team].
 
+There are two ways to run under gdb:
+1. In the root directory run **openocd**, In a different terminal run **cargo run**
+2. In the root directory run **cargo embed**. In a different terminal run **gdb-multiarch -x gdb.run target/thumbv7em-none-eabihf/debug/stm32f3disc-quickstart**
+
 The examples that have been added or updated and the examples that have been tested:
 * hello (see notes for open issues)
 * serial (actually builds with current crate versions unlike every example google could find, that does not come with the HAL)
@@ -83,15 +87,3 @@ to intervene to uphold that code of conduct.
 
 [CoC]: https://www.rust-lang.org/policies/code-of-conduct
 [team]: https://github.com/rust-embedded/wg#the-cortex-m-team
-
-## Notes
-running with **runner = "gdb-multiarch -q -x openocd.gdb"**
-
-_cargo run_ leds work and expected  and pressing the User button will stop
-and start the led action. Killing openocd the leds continue to rotate but
-the User button will stop the rotation but the led remains lit and  a
-second press does not restart the leds. Without openocd running the semihosting message is not available.
-
-_cargo run --release_ While semihosting messages indicate the User button
-presses are detected but the leds to not indicate that.
-
