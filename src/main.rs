@@ -18,11 +18,10 @@ use critical_section::Mutex;
 use stm32f3xx_hal::{
     interrupt,
     gpio::{self, Edge, Input},
-    pac::{Peripherals, NVIC},
+    pac::{Peripherals, NVIC, Interrupt},
     delay::Delay,
     prelude::*
 };
-use stm32f3xx_hal::pac::Interrupt;
 
 type ButtonPin = gpio::PA0<Input>;
 

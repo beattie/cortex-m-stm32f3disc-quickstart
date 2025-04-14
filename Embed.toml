@@ -3,7 +3,7 @@ protocol = "Swd"
 
 [default.general]
 # chip = "nrf52833_xxAA" # micro:bit V2
-chip = "STM32F303VCT6" # stm32F3-discovery (maybe)
+chip = "STM32F303VCTx" # stm32F3-discovery
 
 [default.rtt]
 enabled = true
