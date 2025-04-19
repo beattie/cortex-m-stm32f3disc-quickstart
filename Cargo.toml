@@ -15,6 +15,8 @@ panic-halt = "1.0.0"
 panic-rtt-target = { version = "0.1.1", features = ["cortex-m"] }
 rtt-target = { version = "0.6", features = ["defmt"] }
 stm32f3xx-hal = { version = "0.10.0", features = ["ld", "rt", "stm32f303xc"] }
+fring = "0.3"
+format_no_std = "1.2"
 
 # Uncomment for the panic example.
 # panic-itm = "0.4.1"
