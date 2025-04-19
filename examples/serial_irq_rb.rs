@@ -35,6 +35,18 @@ unsafe fn get_serial() -> &'static mut SerialType {
     if let Some(ref mut gpioc) = SERIAL { &mut *gpioc } else { panic!() }
 }
 
+// put byte into xmit queue
+fn put_byte(byte: u8) -> Result<(), ()> {
+    let mut xmit = unsafe { XMIT_BUF.producer() };
+    let mut w = xmit.write(1);
+    if w.len() == 0 {
+        Err(())
+    } else {
+        w[0] = byte;
+        Ok(())
+    }
+}
+
 #[entry]
 fn main() -> ! {
     rtt_init_print!();
@@ -72,27 +84,27 @@ fn main() -> ! {
     let serial = unsafe { get_serial() };
     serial.enable_interrupt(ReceiveDataRegisterNotEmpty);
 
-    let mut xmit = unsafe { XMIT_BUF.producer() };
-
     let mut tick: u32 = 0;
     let mut buffer = [0u8; 32];
     loop {
         delay.delay_ms(1000u16);
         rprintln!("Tick {}", tick);
-        // let output = "Tick\n\r".as_bytes();
-        // let mut w = xmit.write(output.len());
-        let mut b = format_no_std::show(
+        let b = format_no_std::show(
             &mut buffer,
             format_args!("Tick {}\r\n", tick),
             ).unwrap().as_bytes();
-        let mut w = xmit.write(b.len());
-        if w.len() == 0 {
-            rprintln!("xmit buffer full");
-            continue;
+        for i in 0..b.len() {
+            match put_byte(b[i]) {
+                Ok(()) => {
+                    continue;
+                }
+                Err(()) => {
+                    rprintln!("xmit full");
+                    break;
+                }
+            };
         }
-        for i in 0..w.len() {
-            w[i] = b[i];
-        }
+        // enable transmit interrupt, even if nothing added to queue becaus it's full
         serial.enable_interrupt(TransmitDataRegisterEmtpy);
         tick += 1;
     }
@@ -100,11 +112,6 @@ fn main() -> ! {
 
 #[interrupt]
 fn USART1_EXTI25() {
-    // enabling and disabling the interrupt too rapidly seems to cause problems
-    // so track the conditions that decide to enable or disable the transmit
-    // interrupt
-    let mut interrupt_dis = false;
-    let mut interrupt_ena = false;
     let serial = unsafe { get_serial() };
     // check for transmit ready for next byte
     if serial.triggered_events().contains(TransmitDataRegisterEmtpy) {
@@ -123,7 +130,7 @@ fn USART1_EXTI25() {
         drop(r);
         // if consumer empty turn off transmit interrupt
         if xmit.data_size() < 1 {
-            interrupt_dis = true;
+            serial.disable_interrupt(TransmitDataRegisterEmtpy);
         }
     }
     // check for input ready
@@ -131,22 +138,18 @@ fn USART1_EXTI25() {
         // read byte and add it to ring buffer
         match serial.read() {
             Ok(byte) => {
-                let mut xmit = unsafe { XMIT_BUF.producer() };
-                let mut w = xmit.write(1);
-                // if byte added to ring buffer enable transmit interrupt
-                if w.len() > 0 {
-                    w[0] = byte;
-                    interrupt_ena = true;
-                }
+                match put_byte(byte) {
+                    Ok(()) => {
+                        serial.enable_interrupt(TransmitDataRegisterEmtpy);
+                    }
+                    Err(()) => {
+                        rprintln!("xmit full");
+                    }
+                };
             }
             Err(_error) => {
                 ();
             }
         };
-    }
-    if interrupt_ena {
-        serial.enable_interrupt(TransmitDataRegisterEmtpy);
-    } else if interrupt_dis {
-        serial.disable_interrupt(TransmitDataRegisterEmtpy);
     }
 }
