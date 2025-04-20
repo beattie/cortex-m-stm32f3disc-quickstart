@@ -1,13 +1,16 @@
 #![no_std]
 #![no_main]
-use panic_semihosting as _; // logs messages to the host stderr; requires a debugger
+use panic_rtt_target as _; // logs messages to the host stderr; requires a debugger
 
 use cortex_m_rt::entry;
-use panic_halt as _;
-// use stm32f3xx_hal::{pac, prelude::*, serial};
+use rtt_target::{rtt_init_print, rprintln};
+use stm32f3xx_hal::{pac, prelude::*, serial};
 
 #[entry]
 fn main() -> ! {
+    rtt_init_print!();
+    rprintln!("Serial Demo");
+
     let dp = pac::Peripherals::take().unwrap();
     let mut rcc = dp.RCC.constrain();
     let mut flash = dp.FLASH.constrain();
