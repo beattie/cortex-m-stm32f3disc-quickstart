@@ -9,16 +9,19 @@
 #![deny(unsafe_code)]
 #![no_main]
 #![no_std]
-
-use panic_halt as _;
+use panic_rtt_target as _; // logs messages to the host stderr; requires a debugger
 
 use cortex_m::peripheral::syst::SystClkSource;
 use cortex_m::Peripherals;
 use cortex_m_rt::{entry, exception};
-use cortex_m_semihosting::hprint;
+use rtt_target::{rtt_init_print, rprint};
+// next two lines to hack the interrupt vector
+#[allow(unused_imports)]
+use stm32f3xx_hal::interrupt;
 
 #[entry]
 fn main() -> ! {
+    rtt_init_print!();
     let p = Peripherals::take().unwrap();
     let mut syst = p.SYST;
 
@@ -33,5 +36,5 @@ fn main() -> ! {
 
 #[exception]
 fn SysTick() {
-    hprint!(".");
+    rprint!(".");
 }
