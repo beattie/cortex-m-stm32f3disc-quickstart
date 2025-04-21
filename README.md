@@ -6,11 +6,9 @@ This project was started from the cortex-m-quickstart project from [Cortex-M tea
 
 There are two ways to run under gdb:
 1. In the root directory run **openocd**, In a different terminal run **cargo run**
-2. In the root directory run **cargo embed**. In a different terminal run **gdb-multiarch -x gdb.run target/thumbv7em-none-eabihf/debug/stm32f3disc-quickstart**
 
-The examples that have been added or updated and the examples that have been tested:
-* hello (see notes for open issues)
-* serial (actually builds with current crate versions unlike every example google could find, that does not come with the HAL)
+   or
+3. In the root directory run **cargo embed**. In a different terminal run **gdb-multiarch -x gdb.run target/thumbv7em-none-eabihf/debug/stm32f3disc-quickstart**
 
 ## Dependencies
 
