@@ -2,13 +2,16 @@
 
 > A template for building applications for the stm32f3-Discovery board
 
-This project was started from the cortex-m-quickstart project from [Cortex-M team][team].
+This project was started from the cortex-m-quickstart project from [Cortex-M team][team]. Included is a project to demonstrate **RTIC** (Real-Time Interrupt-driven Concurrency) an RTOS-like framework.
 
 There are two ways to run under gdb:
 1. In the root directory run **openocd**, In a different terminal run **cargo run**
 
    or
 3. In the root directory run **cargo embed**. In a different terminal run **gdb-multiarch -x gdb.run target/thumbv7em-none-eabihf/debug/stm32f3disc-quickstart**
+
+examples/rtic is a project to demonstrate **RTIC**, it includes a task to rotate the LEDs and tasks to transmit "Hello World" and echo characters. To run, change to
+_examples/rtic_ and run **cargo enbed**.
 
 ## Dependencies
 
