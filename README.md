@@ -10,6 +10,8 @@ There are two ways to run under gdb:
    or
 3. In the root directory run **cargo embed**. In a different terminal run **gdb-multiarch -x gdb.run target/thumbv7em-none-eabihf/debug/stm32f3disc-quickstart**
 
+## examples RTIC
+
 examples/rtic is a project to demonstrate **RTIC**, it includes a task to rotate the LEDs and tasks to transmit "Hello World" and echo characters. To run, change to
 _examples/rtic_ and run **cargo enbed**.
 
